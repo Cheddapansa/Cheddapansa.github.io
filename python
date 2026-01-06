@@ -1,0 +1,190 @@
+from kivy.app import App
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.lang import Builder
+from kivy.core.window import Window
+import sqlite3
+import bcrypt
+
+
+# Database utility functions
+def create_connection():
+    """Create a database connection to an SQLite database"""
+    try:
+        conn = sqlite3.connect('userInfo.db')
+        print(f'Successful connection with sqlite version {sqlite3.version}')
+        return conn
+    except sqlite3.Error as e:
+        print(f"Error creating database connection: {e}")
+        return None
+
+
+def create_table():
+    """Create the userInfo table"""
+    conn = create_connection()
+    if conn is not None:
+        try:
+            sql = '''
+            CREATE TABLE IF NOT EXISTS userInfo (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL UNIQUE,
+                email TEXT NOT NULL UNIQUE,
+                password TEXT NOT NULL
+            )
+            '''
+            conn.execute(sql)
+            print("Table created successfully or already exists.")
+        except sqlite3.Error as e:
+            print(f"Error creating table: {e}")
+        finally:
+            conn.close()
+
+
+# Screens
+class IndexScreen(Screen):
+    pass
+
+
+class LoginScreen(Screen):
+    def check_login(self):
+        email = self.ids.email.text
+        password = self.ids.password.text
+
+        # Database for user login
+        conn = create_connection()
+        if conn is not None:
+            try:
+                cursor = conn.cursor()
+                cursor.execute('SELECT * FROM userInfo WHERE email = ?', (email,))
+                user = cursor.fetchone()
+                conn.close()
+
+                if user:
+                    # Password check
+                    stored_hashed_password = user[3]  # Assuming 'password' is in the 4th column
+                    if bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
+                        print("Login successful")
+                        self.ids.error_label.text = "Login successful!"
+                        self.manager.current = 'home'
+                    else:
+                        self.ids.error_label.text = "Invalid password, please try again."
+                else:
+                    self.ids.error_label.text = "User not found."
+            except sqlite3.Error as e:
+                self.ids.error_label.text = f"Database error: {e}"
+        else:
+            self.ids.error_label.text = "Unable to connect to the database."
+
+
+class SignUpScreen(Screen):
+    def do_signup(self):
+        email = self.ids.new_email.text
+        username = self.ids.username.text
+        password = self.ids.new_password.text
+        confirm_password = self.ids.confirm_password.text
+
+        if password != confirm_password:
+            self.ids.error_label.text = "Passwords do not match"
+            return
+
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+        # Database insertion for signup
+        conn = create_connection()
+        if conn is not None:
+            try:
+                cursor = conn.cursor()
+                cursor.execute('''
+                    INSERT INTO userInfo (username, email, password)
+                    VALUES (?, ?, ?)
+                ''', (username, email, hashed_password.decode('utf-8')))
+                conn.commit()
+                conn.close()
+                self.ids.error_label.text = "Signup successful!"
+                self.manager.current = 'home'
+            except sqlite3.IntegrityError:
+                self.ids.error_label.text = "Email or username already exists."
+            except sqlite3.Error as e:
+                self.ids.error_label.text = f"Database error: {e}"
+            finally:
+                conn.close()
+        else:
+            self.ids.error_label.text = "Unable to connect to the database."
+
+class ForgotPasswordScreen(Screen):
+    def reset_password(self):
+        email = self.ids.email.text
+        new_password = self.ids.new_password.text
+        confirm_password = self.ids.confirm_password.text
+
+        if new_password != confirm_password:
+            self.ids.error_label.text = "Passwords do not match"
+            return
+        
+        conn = sqlite3.connect('userInfo.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
+        user = cursor.fetchone()
+
+        if user:
+            hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+            cursor.execute('UPDATE users SET password = ? WHERE email = ?', (hashed_password, email))
+            conn.commit()
+            conn.close()
+            self.ids.error_label.text = "Password reset successfully!"
+            self.manager.current = 'login'
+        else:
+            conn.close()
+            self.ids.error_label.text = "Email not found!"
+            
+class ChangePasswordScreen(Screen):
+    def change_password(self):
+        current_password = self.ids.current_password.text
+        new_password = self.ids.new_password.text
+        confirm_password = self.ids.confirm_password.text
+        email = self.manager.get_screen('home').user_email  # Assuming user_email is passed from the home screen
+
+        if new_password != confirm_password:
+            self.ids.error_label.text = "New passwords do not match"
+            return
+        
+        conn = sqlite3.connect('userInfo.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT password FROM users WHERE email = ?', (email,))
+        user = cursor.fetchone()
+        
+        if user and bcrypt.checkpw(current_password.encode('utf-8'), user[0]):
+            hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+            cursor.execute('UPDATE users SET password = ? WHERE email = ?', (hashed_password, email))
+            conn.commit()
+            conn.close()
+            self.ids.error_label.text = "Password changed successfully!"
+        else:
+            conn.close()
+            self.ids.error_label.text = "Current password is incorrect"
+           
+class AboutScreen(Screen):
+    pass
+
+
+class HomeScreen(Screen):
+    pass
+
+
+class WindowManager(ScreenManager):
+    pass
+
+
+# Load KV File
+kv = Builder.load_file("my.kv")
+
+
+class MyApp(App):
+    def build(self):
+        Window.clearcolor = (1, 1, 1, 1)  # Set background color to white
+        create_table()  # Ensure the database table exists
+        return kv
+
+
+# Run the app
+if __name__ == '__main__':
+    MyApp().run()

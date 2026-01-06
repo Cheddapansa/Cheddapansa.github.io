@@ -1,0 +1,717 @@
+WindowManager:
+    IndexScreen:
+    LoginScreen:
+    SignUpScreen:
+    AboutScreen:
+    HomeScreen:
+    ChangePassScreen:
+    AccountScreen:
+    ForgotPassScreen:
+    DeleteAccountScreen:
+    FoodPreferencesScreen:
+
+
+<IndexScreen>:
+    name: 'index'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.7 
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source:"Index screen picture food.jpg"
+    BoxLayout:
+        orientation: "vertical" 
+        padding: 50
+        spacing: 20
+        background_color: (1, 1, 1, 1)
+        Label:
+            text: "Fridge organiser and recipe finder"
+            halign: "center"
+            valign: "middle"
+            text_size: self.width, None
+            font_name: "Impact"
+            color: 1, 1, 1, 1
+            font_size: 100
+            
+        Button:
+            text: "Login"
+            font_name: "Impact"
+            font_size: 70
+            size_hint: None, None
+            size: dp(150), dp(50)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            on_release:
+                app.root.current = 'login'
+            color: 0, 0, 0, 1
+            background_color: (1, 0.647, 0, 1)
+            background_normal: ''
+
+        Button:
+            text: "Sign up"
+            font_name: "Impact"
+            font_size: 70
+            size_hint: None, None
+            size: dp(150), dp(50)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            on_release: app.root.current = 'signup'
+            color: 0, 0, 0, 1
+            background_color: (0, 0.8, 0.4, 1)
+            background_normal: ''
+        Button:
+            text: "About this app"
+            font_name: "Impact"
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(200), dp(50)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            on_release: app.root.current = 'about'
+            color: 0, 0, 0, 1
+            background_color: (1, 0, 0.87, 1)
+            background_normal: ''
+<SignUpScreen>:
+    name: 'signup'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.7 
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source:"Sign up screen food pic.jpg"
+    newEmail: newEmail
+    newPass: newPass
+    confirmPass: confirmPass
+    username: username
+    errorMessage: errorMessage
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(50)
+        spacing: dp(20)
+        
+        Label:
+            text: "Sign Up"
+            font_name: "Impact"
+            font_size: dp(30)
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(50)
+
+        TextInput:
+            id: username
+            hint_text: 'Username'
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+        TextInput:
+            id: newEmail
+            hint_text: 'Email'
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+            
+        TextInput:
+            id: newPass
+            hint_text: 'Password'
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+            password: True
+        TextInput:
+            id: confirmPass
+            hint_text: 'Confirm Password'
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+            password: True
+            
+        Button:
+            text: 'Sign Up'
+            font_name: 'Impact'
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(150), dp(50)
+            pos_hint: {'center_x': 0.5}
+            on_press: root.signup()
+            background_color: (0, 0.8, 0.4, 1)
+            background_normal: ''
+        Button:
+            text: 'Go back'
+            font_name: 'Impact'
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(150), dp(50)
+            pos_hint: {'center_x': 0.5}
+            on_release: 
+                app.root.current = 'index'
+            background_color: (0, 0.3, 5.3, 1)
+            background_normal: ''
+        Label:
+            id: errorMessage
+            text: ""
+            font_name: "Impact"
+            font_size: 20
+            color: 1, 0, 0, 1  # Red text for error
+            halign: 'center'
+<LoginScreen>:
+    name: 'login'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.7 
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source:"Login screen Food pic.jpg"
+    email: email
+    password: password
+    errorMessage: errorMessage
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(50)
+        spacing: dp(20)
+
+        Label:
+            text: "Login"
+            font_name: "Impact"
+            font_size: dp(30)
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(50)
+            halign: 'center'
+        GridLayout:
+            cols: 1
+            padding: dp(20)
+            spacing: dp(20)
+
+            TextInput:
+                id: email
+                hint_text: 'Email'
+                size_hint_y: None
+                height: dp(50)
+                multiline: False
+
+            TextInput:
+                id: password
+                hint_text: 'Password'
+                size_hint_y: None
+                height: dp(50)
+                multiline: False
+                password: True
+
+            Button:
+                text: 'Login'
+                font_name: 'Impact'
+                font_size: dp(25)
+                size_hint: None, None
+                size: dp(150), dp(50)
+                pos_hint: {'center_x': 0.5}
+                on_press: root.login()
+                background_color: (1, 0.647, 0, 1)
+                background_normal: ''
+            Button:
+                text: 'Forgot Password'
+                font_name: 'Impact'
+                font_size: dp(25)
+                size_hint: None, None
+                size: dp(190), dp(50)
+                pos_hint: {'center_x': 0.5}
+                on_release: app.root.current = 'forgot'
+                background_color: (0.6, 0.6, 0.6, 1)
+                background_normal: ''
+                
+            Button:
+                text: 'Go back'
+                font_name: 'Impact'
+                font_size: dp(25)
+                size_hint: None, None
+                size: dp(150), dp(50)
+                pos_hint: {'center_x': 0.5}
+                on_release: app.root.current = 'index'
+                background_color: (0.6, 0.6, 0.6, 1)
+                background_normal: ''
+            Label:
+                id: errorMessage
+                text: ""
+                font_name: "Impact"
+                font_size: 20
+                color: 1, 0, 0, 1
+                halign: 'center'
+<AboutScreen>
+    name: 'about'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.7 
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source:"AboutScreen pic.webp"
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(50)
+        Label:
+            halign: "center"
+            valign: "middle"
+            font_name: "Impact"
+            font_size: dp(20)
+            color: 0, 0, 0, 1
+
+        Button:
+            text:'Go back'
+            font_name:'Impact'
+            font_size:dp(25)
+            size_hint:None, None
+            size: dp(150), dp(50)
+            pos_hint:{'center_x': 0.5}
+            on_release: 
+                app.root.current = 'index'
+            background_color: (0.6, 0.6, 0.6, 1)
+            background_normal: ''
+
+<ForgotPassScreen>:
+    name: "forgot"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.7
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "Forgotpassscreen pic.jpg"
+    email: email
+    newPass: newPass
+    confirmPass: confirmPass
+    errorMessage: errorMessage
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(50)
+        spacing: dp(20)
+
+        Label:
+            text: "Forgot Password"
+            font_name: "Impact"
+            font_size: dp(30)
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(50)
+            halign: 'center'
+            valign: 'middle'
+
+        TextInput:
+            id: email
+            hint_text: "Enter your email"
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+
+        TextInput:
+            id: newPass
+            hint_text: "Enter new password"
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+            password: True
+
+        TextInput:
+            id: confirmPass
+            hint_text: "Confirm new password"
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+            password: True
+
+        Label:
+            id: errorMessage
+            text: ""
+            font_name: "Impact"
+            font_size: dp(20)
+            color: 1, 0, 0, 1
+            halign: 'center'
+
+        Button:
+            text: "Reset Password"
+            font_name: "Impact"
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(190), dp(50)
+            pos_hint: {'center_x': 0.5}
+            on_press: root.resetPass()
+            background_color: (0, 0.8, 0.4, 1)
+            background_normal: ''
+
+        Button:
+            text: 'Go back'
+            font_name: 'Impact'
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(150), dp(50)
+            pos_hint: {'center_x': 0.5}
+            on_release: app.root.current = 'login'
+            background_color: (0.6, 0.6, 0.6, 1)
+            background_normal: ''
+
+<ChangePassScreen>:
+    name: "change"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.7
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "Change pass screen pic.jpg"
+    email: email
+    currentPass: currentPass
+    newPass: newPass
+    confirmPass: confirmPass
+    errorMessage: errorMessage
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(50)
+        spacing: dp(20)
+
+        Label:
+            text: "Change Password"
+            font_name: "Impact"
+            font_size: dp(30)
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(50)
+            halign: 'center'
+            valign: 'middle'
+
+        Label:
+            id: errorMessage
+            text: ""
+            font_name: "Impact"
+            font_size: dp(20)
+            color: 1, 0, 0, 1  # Red for errors
+            halign: 'center'
+
+        TextInput:
+            id: email
+            hint_text: "Enter your email"
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+
+        TextInput:
+            id: currentPass
+            hint_text: "Enter current password"
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+            password: True
+
+        TextInput:
+            id: newPass
+            hint_text: "Enter new password"
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+            password: True
+
+        TextInput:
+            id: confirmPass
+            hint_text: "Confirm new password"
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+            password: True
+
+        Button:
+            text: "Change Password"
+            font_name: "Impact"
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(190), dp(50)
+            pos_hint: {'center_x': 0.5}
+            on_release: root.changePass()
+            background_color: (0, 0.8, 0.4, 1)
+            background_normal: ''
+
+        Button:
+            text: "Back"
+            font_name: "Impact"
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(150), dp(50)
+            pos_hint: {'center_x': 0.5}
+            on_release: app.root.current = "home"
+            background_color: (0.6, 0.6, 0.6, 1)
+            background_normal: ''
+
+<HomeScreen>:
+    name: 'home'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.7
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "Homescreen pic.webp"
+    BoxLayout:
+        orientation: "vertical" 
+        padding: dp(50)
+        spacing: dp(20)
+
+        Label:
+            text: "Home Page"
+            font_name: "Impact"
+            font_size: dp(30)
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(50)
+            halign: "center"
+            valign: "middle"
+
+        Button:
+            text: "Fridge"
+            font_name: "Impact"
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(200), dp(50)
+            pos_hint: {'center_x': 0.5}
+            on_release: app.root.current = 'fridge'
+            background_color: (1, 0.647, 0, 1)
+            background_normal: ''
+
+        Button:
+            text: "Recipe Finder"
+            font_name: "Impact"
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(200), dp(50)
+            pos_hint: {'center_x': 0.5}
+            on_release: app.root.current = 'recipefinder'
+            background_color: (0, 0.8, 0.4, 1)
+            background_normal: ''
+
+        Button:
+            text: "Change Password"
+            font_name: "Impact"
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(250), dp(50)
+            pos_hint: {'center_x': 0.5}
+            on_release: app.root.current = 'change'
+            background_color: (0, 0.6, 0.9, 1)
+            background_normal: ''
+
+        Button:
+            text: "Account Info"
+            font_name: "Impact"
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(200), dp(50)
+            pos_hint: {'center_x': 0.5 }
+            on_release: app.root.current = 'account'
+            background_color: (1, 0, 0.87, 1)
+            background_normal: ''
+
+<AccountInfoScreen>:
+    name: "account"  
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.7
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "AccountInfo pic.jpg" 
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(50)
+        spacing: dp(20)
+
+        Label:
+            text: "Account Information"
+            font_name: "Impact"
+            font_size: dp(30)
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(50)
+            halign: "center"
+            valign: "middle"
+
+        Label:
+            id: accountInfo
+            text: "Username: [username]\\nEmail: [email]" #\\n is for new line
+            markup: True
+            font_size: dp(20)
+            color: 0, 0, 0, 1
+            size_hint_y: None
+            height: dp(80)
+            halign: "center"
+            valign: "middle"
+
+        Button:
+            text: "Delete Account"
+            font_name: "Impact"
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(200), dp(50)
+            pos_hint: {'center_x': 0.5}
+            background_color: (1, 0, 0, 1)  # Red color
+            background_normal: ''
+            on_press: app.root.current = "delete"
+
+        Button:
+            text: "Back to Home"
+            font_name: "Impact"
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(200), dp(50)
+            pos_hint: {'center_x': 0.5}
+            background_color: (0.6, 0.6, 0.6, 1)
+            background_normal: ''
+            on_press: app.root.current = "home"
+
+<DeleteAccountScreen>:
+    name: "delete"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.7
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "Deletescren pic.jpg"  
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(50)
+        spacing: dp(20)
+
+        Label:
+            text: "Delete Account"
+            font_name: "Impact"
+            font_size: dp(30)
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(50)
+            halign: "center"
+            valign: "middle"
+
+        Label:
+            id: errorMessage
+            text: ""
+            font_name: "Impact"
+            font_size: dp(20)
+            color: 1, 0, 0, 1 
+            size_hint_y: None
+            height: dp(30)
+            halign: "center"
+            valign: "middle"
+
+        TextInput:
+            id: email
+            hint_text: "Enter your email"
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+
+        TextInput:
+            id: confirmInput
+            hint_text: 'Type "delete" to confirm'
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+
+        Button:
+            text: "Delete Account"
+            font_name: "Impact"
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(200), dp(50)
+            pos_hint: {'center_x': 0.5}
+            background_color: (1, 0, 0, 1)  
+            background_normal: ''
+            on_release: root.deleteAccount()
+
+        Button:
+            text: "Back"
+            font_name: "Impact"
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(200), dp(50)
+            pos_hint: {'center_x': 0.5}
+            background_color: (0.6, 0.6, 0.6, 1)
+            background_normal: ''
+            on_release: app.root.current = "home"
+
+<FoodPreferencesScreen>:
+    name: 'foodPreferences'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.7
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "form pic.jpg" 
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(50)
+        spacing: dp(20)
+
+        Label:
+            text: "Food Preferences"
+            font_name: "Impact"
+            font_size: dp(30)
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(50)
+            halign: "center"
+            valign: "middle"
+
+
+        Label:
+            text: "Allergies"
+            font_name: "Impact"
+            font_size: dp(20)
+            halign: "left"
+        TextInput:
+            id: allergies
+            hint_text: "Enter any food allergies"
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+
+        Label:
+            text: "Chronic Conditions"
+            font_name: "Impact"
+            font_size: dp(20)
+            halign: "left"
+        TextInput:
+            id: chronic_conditions
+            hint_text: "Enter any chronic conditions"
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+
+        Label:
+            text: "Special Diets"
+            font_name: "Impact"
+            font_size: dp(20)
+            halign: "left"
+        TextInput:
+            id: special_diets
+            hint_text: "Enter any special diets"
+            size_hint_y: None
+            height: dp(50)
+            multiline: False
+
+        Button:
+            text: "Save Preferences"
+            font_name: "Impact"
+            font_size: dp(25)
+            size_hint: None, None
+            size: dp(200), dp(50)
+            pos_hint: {'center_x': 0.5}
+            on_press: root.form()
+            background_color: (0, 0.8, 0.4, 1)
+            background_normal: ''
+            on_press: app.root.current = 'home'
+
+        Label:
+            id: errorMessage
+            text: ""
+            font_name: "Impact"
+            font_size: dp(20)
+            color: 1, 0, 0, 1
+            halign: 'center'
+
+    
